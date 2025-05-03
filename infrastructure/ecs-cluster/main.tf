@@ -12,7 +12,7 @@ module "ecs_task_definition" {
     portMappings = [{
       containerPort = 80
       protocol      = "tcp"
-    }]
+    }] 
   }])
   cpu                      = 256
   memory                   = 512
