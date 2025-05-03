@@ -4,7 +4,7 @@ module "ecs_cluster" {
   capacity_providers = ["FARGATE"]
   create_cluster     = true
 }
-
+ 
 module "ecs_task_definition" {
   source = "terraform-aws-modules/ecs/aws"
   family = "my-ecs-sample-task"
