@@ -1,8 +1,6 @@
 module "ecs_cluster" {
   source             = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
   name               = "my-ecs-tf-cluster"
-  capacity_providers = ["FARGATE"]
-  create_cluster     = true
 }
  
 module "ecs_task_definition" {
