@@ -1,5 +1,5 @@
 module "ecs_cluster" {
-  source             = "../../.modules/aws/ecs"
+  source             = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
   version            = "~> 4.0"
   name               = "my-ecs-cluster"
   capacity_providers = ["FARGATE"]
