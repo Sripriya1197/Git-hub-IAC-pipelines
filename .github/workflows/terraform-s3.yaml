@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  terraform:      
+  terraform:        
     name: 'Terraform Init, Format, Validate, Plan, Apply'    
     runs-on: ubuntu-latest
 
