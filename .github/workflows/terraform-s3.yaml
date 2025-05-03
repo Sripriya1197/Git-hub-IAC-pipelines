@@ -1,9 +1,11 @@
-name: Terraform CI/CD
+name: Terraform-s3 CI/CD
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'infrastructure/s3/**'
 
 jobs:
   terraform:        
