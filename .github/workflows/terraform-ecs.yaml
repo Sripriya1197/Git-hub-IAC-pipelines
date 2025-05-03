@@ -8,7 +8,7 @@ on:
 jobs:
   terraform:      
     name: 'Terraform Init, Format, Validate, Plan, Apply'    
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
 
     env:
       AWS_REGION: 'ap-south-1'    
