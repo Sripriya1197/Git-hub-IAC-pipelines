@@ -1,6 +1,6 @@
 module "ecs_cluster" {
-  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
-  name   = "my-ecs-tf-cluster"
+  source = "terraform-aws-modules/ecs/aws"
+  cluster_name = "my-ecs-tf-cluster"
 }
 
 module "ecs_service" {
