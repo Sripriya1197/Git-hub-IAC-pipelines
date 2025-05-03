@@ -34,5 +34,7 @@ module "ecs_service" {
     subnets          = ["subnet-0697385b41cf20408"]
     security_groups  = ["sg-0ef52138839aef07e"]
     assign_public_ip = true
+    execution_role_arn = "arn:aws:sts::273354669111:assumed-role/AWSReservedSSO_AdministratorAccess_dd92f98a76cf94d8/SriPriyadharshini"
+    task_role_arn      = "arn:aws:sts::273354669111:assumed-role/AWSReservedSSO_AdministratorAccess_dd92f98a76cf94d8/SriPriyadharshini"
   }
 }
