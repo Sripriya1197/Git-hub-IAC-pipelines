@@ -1,14 +1,13 @@
 module "ecs_cluster" {
   source             = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
-  version            = "~> 4.0"
-  name               = "my-ecs-cluster"
+  name               = "my-ecs-tf-cluster"
   capacity_providers = ["FARGATE"]
   create_cluster     = true
 }
 
 module "ecs_task_definition" {
-  source = "terraform-aws-modules/ecs/aws//modules/task-definition"
-  family = "myapp-task"
+  source = "terraform-aws-modules/ecs/aws"
+  family = "my-ecs-sample-task"
   container_definitions = jsonencode([{
     name  = "my-container"
     image = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/github-action:1.1.1"
@@ -24,8 +23,8 @@ module "ecs_task_definition" {
 }
 
 module "ecs_service" {
-  source          = "terraform-aws-modules/ecs/aws//modules/service"
-  name            = "myapp-service"
+  source          = "terraform-aws-modules/ecs/aws"
+  name            = "my-ecs-sample-service"
   cluster         = module.ecs_cluster.cluster_id
   task_definition = module.ecs_task_definition.task_definition_arn
   desired_count   = 1
