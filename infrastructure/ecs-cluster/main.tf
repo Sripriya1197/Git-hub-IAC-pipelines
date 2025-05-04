@@ -1,7 +1,6 @@
- module "ecs" {
-  source       = "  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
+module "ecs" {
+  source       = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
   cluster_name = "my-ecs-cluster"
-  services = "sample-app"
 
   services = {
     sample-app = {
