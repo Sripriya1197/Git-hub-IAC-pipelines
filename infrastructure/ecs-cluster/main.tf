@@ -9,7 +9,7 @@ module "ecs" {
       cpu    = 256
       memory = 512   
 
-      assign_public_ip = true
+      assign_public_ip = true   
 
       container_definitions = {
         sample-app-container = {
