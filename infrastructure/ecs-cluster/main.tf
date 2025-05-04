@@ -1,14 +1,15 @@
 module "ecs" {
   source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
+ 
 
-  cluster_name             = "my-ecs-tf-cluster"
-  create                   = true
-  task_execution_role_arn  = "arn:aws:iam::273354669111:role/ecsTaskExecutionRole"
+  cluster_name = "my-ecs-tf-cluster"
 
   services = {
     sample-app = {
       cpu    = 256
       memory = 512
+
+      assign_public_ip = true
 
       container_definitions = {
         sample-app-container = {
@@ -44,6 +45,8 @@ module "ecs" {
           cidr_blocks = ["0.0.0.0/0"]
         }
       }
+
+      task_execution_role_arn = "arn:aws:iam::273354669111:role/ecsTaskExecutionRole"
     }
   }
 }
