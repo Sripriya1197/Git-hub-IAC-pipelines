@@ -7,7 +7,7 @@ module "ecs" {
   services = {
     sample-app = {
       cpu    = 256
-      memory = 512
+      memory = 512   
 
       assign_public_ip = true
 
