@@ -1,80 +1,40 @@
-module "ecs" {
-  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
-  cluster_name = "ecs-cluster-tf"
-
-  cluster_configuration = {
-    execute_command_configuration = {
-      logging = "OVERRIDE"
-      log_configuration = {
-        cloud_watch_log_group_name = "/aws/ecs/aws-ec2"
-      }
-    }
-  }
-
-  fargate_capacity_providers = {
-    FARGATE = {
-      default_capacity_provider_strategy = {
-        weight = 50
-      }
-    }
-    FARGATE_SPOT = {
-      default_capacity_provider_strategy = {
-        weight = 50
-      }
-    }
-  }
+ module "ecs" {
+  source       = "  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
+  cluster_name = "my-ecs-cluster"
+  services = "sample-app"
 
   services = {
     sample-app = {
-      cpu    = 1024
-      memory = 4096
+      cpu    = 256
+      memory = 512
 
-      # Container definition(s)
       container_definitions = {
-
-        fluent-bit = {
-          cpu       = 512
-          memory    = 1024
-          essential = true
+        sample-app-container = {
           image     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/sample_app:1.0.0"
-          firelens_configuration = {
-            type = "fluentbit"
-          }
-          memory_reservation = 50
-        }
-
-        ecs-sample = {
-          cpu       = 512
-          memory    = 1024
           essential = true
-          image     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/sample_app:1.0.0"
           port_mappings = [
             {
-              name          = "ecs-sample"
               containerPort = 80
               protocol      = "tcp"
             }
           ]
-
-          # Example image used requires access to write to root filesystem
-          readonly_root_filesystem = false
-
-          dependencies = [{
-            containerName = "fluent-bit"
-            condition     = "START"
-          }]
-
-      subnet_ids = ["subnet-0422988b659d1f0a1"]
-      security_group_rules = {
-        alb_ingress_3000 = {
-          type                     = "ingress"
-          from_port                = 80
-          to_port                  = 80
-          protocol                 = "tcp"
-          description              = "Service port"
-          source_security_group_id = "sg-0ef52138839aef07e"
         }
-        egress_all = {
+      }
+
+      subnet_ids = [
+        "subnet-0697385b41cf20408"
+      ]
+
+      security_group_rules = {
+        allow_http = {
+          type        = "ingress"
+          from_port   = 80
+          to_port     = 80
+          protocol    = "tcp"
+          cidr_blocks = ["0.0.0.0/0"]
+        }
+
+        allow_all_egress = {
           type        = "egress"
           from_port   = 0
           to_port     = 0
@@ -83,10 +43,5 @@ module "ecs" {
         }
       }
     }
-  }
-
-  tags = {
-    Environment = "Development"
-    Project     = "sample-app"
   }
 }
