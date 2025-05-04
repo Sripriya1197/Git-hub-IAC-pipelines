@@ -3,6 +3,7 @@ module "ecs" {
  
 
   cluster_name = "my-ecs-tf-cluster"  
+  create_cloudwatch_log_group = false
   
   services = {
     sample-app = {
@@ -21,7 +22,14 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-        
+         log_configuration = {
+         log_driver = "awslogs"
+         options = {
+          awslogs-group         = "/aws/ecs/sample-app/sample-app-container"
+        awslogs-region        = "ap-south-1"
+        awslogs-stream-prefix = "ecs"
+      }
+    }
          }
       }
 
