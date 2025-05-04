@@ -1,6 +1,5 @@
 module "ecs" {
-  source = "terraform-aws-modules/ecs/aws"
-
+  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
   cluster_name = "ecs-cluster-tf"
 
   cluster_configuration = {
@@ -26,7 +25,7 @@ module "ecs" {
   }
 
   services = {
-    my-ecs-service = {
+    sample-app = {
       cpu    = 1024
       memory = 4096
 
@@ -37,7 +36,7 @@ module "ecs" {
           cpu       = 512
           memory    = 1024
           essential = true
-          image     = "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ecs-service.html"
+          image     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/sample_app:1.0.0"
           firelens_configuration = {
             type = "fluentbit"
           }
@@ -65,7 +64,7 @@ module "ecs" {
             condition     = "START"
           }]
 
-      subnet_ids = ["subnet-abcde012", "subnet-bcde012a", "subnet-fghi345a"]
+      subnet_ids = ["subnet-0422988b659d1f0a1"]
       security_group_rules = {
         alb_ingress_3000 = {
           type                     = "ingress"
@@ -73,7 +72,7 @@ module "ecs" {
           to_port                  = 80
           protocol                 = "tcp"
           description              = "Service port"
-          source_security_group_id = "sg-12345678"
+          source_security_group_id = "sg-0ef52138839aef07e"
         }
         egress_all = {
           type        = "egress"
