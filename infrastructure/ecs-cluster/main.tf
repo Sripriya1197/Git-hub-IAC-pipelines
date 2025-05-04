@@ -21,7 +21,8 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-        }
+        create_cloudwatch_log_group = false
+         }
       }
 
       subnet_ids = [
