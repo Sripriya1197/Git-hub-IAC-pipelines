@@ -3,7 +3,7 @@ module "ecs" {
  
 
   cluster_name = "my-ecs-tf-cluster"
-
+  
   services = {
     sample-app = {
       cpu    = 256
