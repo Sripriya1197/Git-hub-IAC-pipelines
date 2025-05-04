@@ -1,7 +1,7 @@
 module "ecs" {
   source       = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
   cluster_name = "my-ecs-cluster"
-
+  
   services = {
     sample-app = {
       cpu    = 256
