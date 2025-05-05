@@ -32,6 +32,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
+          
+
 
       - name: Terraform Init
         run: |
@@ -43,6 +45,7 @@ jobs:
         working-directory: infrastructure/eks
 
       - name: Terraform plan
+          rm -rf .terraform/terraform.tfstate.lock.info
         run: terraform plan -out=tfplan
         working-directory: infrastructure/eks
 
