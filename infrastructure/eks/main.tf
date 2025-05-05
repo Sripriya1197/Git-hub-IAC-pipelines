@@ -1,15 +1,6 @@
 module "eks" {  
   source  = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/eks?ref=main"
   cluster_name = "my-eks-tf-cluster"
- 
-
-  bootstrap_self_managed_addons = false
-  cluster_addons = {
-    coredns                = {}
-    eks-pod-identity-agent = {}
-    kube-proxy             = {}
-    vpc-cni                = {}
-  }
 
   cluster_endpoint_public_access = true
   enable_cluster_creator_admin_permissions = true
@@ -37,11 +28,4 @@ module "eks" {
     Environment = "prod"
     Terraform   = "true"
   }
-}
-output "subnet_ids" {
-  value = local.subnet_ids
-}
-
-output "control_plane_subnet_ids" {
-  value = local.control_plane_subnet_ids
 }
