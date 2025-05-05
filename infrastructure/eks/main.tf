@@ -13,7 +13,7 @@ module "eks" {
     instance_types = ["t3.medium"]  
   }
 
-  eks_managed_node_groups = {
+  eks_managed_node_groups = {  
     eks-node = {
       ami_type       = "AL2023_x86_64_STANDARD" 
       instance_types = ["t3.medium"]
