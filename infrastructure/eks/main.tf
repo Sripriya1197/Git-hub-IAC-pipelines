@@ -1,12 +1,12 @@
 module "eks" {  
   source  = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/eks?ref=main"
   cluster_name = "my-eks-tf-cluster"
-  
+ 
 
   bootstrap_self_managed_addons = false
   cluster_addons = {
     coredns                = {}
-    eks-pod-identity-agent = {} 
+    eks-pod-identity-agent = {}
     kube-proxy             = {}
     vpc-cni                = {}
   }
@@ -19,12 +19,12 @@ module "eks" {
   control_plane_subnet_ids = ["subnet-0422988b659d1f0a1", "subnet-0b09b067c081e2a26"]
 
   eks_managed_node_group_defaults = {
-    instance_types = ["t3.medium"]
+    instance_types = ["t3.medium"] 
   }
 
   eks_managed_node_groups = {
     eks-node = {
-      ami_type       = "AL2023_x86_64_STANDARD"
+      ami_type       = "AL2023_x86_64_STANDARD" 
       instance_types = ["t3.medium"]
 
       min_size     = 1
