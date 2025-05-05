@@ -12,7 +12,7 @@ module "eks" {
       desired_size   = 1
     }
   }
-node_role_arn  = "arn:aws:iam::273354669111:role/APIEKSClusterRole"
+node_group_role_arn = "arn:aws:iam::273354669111:role/APIEKSClusterRole"
   tags = {
     Environment = "prod"
     Terraform   = "true"
