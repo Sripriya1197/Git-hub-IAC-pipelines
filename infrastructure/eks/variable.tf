@@ -1,12 +1,12 @@
 module "eks" {  
   source  = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/eks?ref=main"
-  cluster_name = "my-eks-tf-cluster"  
+  cluster_name = var.cluster_name
 
   cluster_endpoint_public_access = true
   enable_cluster_creator_admin_permissions = true
 
-  subnet_ids               = ["subnet-0cc71f61342a9a205", "subnet-0a433e5614138a125"]
-   vpc_id                   = "vpc-0a19349c1563bf053"
+  subnet_ids               = var.subnet_ids
+   vpc_id                   = var.vpc_id
 
   eks_managed_node_group_defaults = {
     instance_types = ["t3.medium"]   
