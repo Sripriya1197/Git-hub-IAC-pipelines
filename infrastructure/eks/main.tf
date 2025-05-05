@@ -7,7 +7,7 @@ module "eks" {
 
   vpc_id                   = "vpc-05601e20ad2591eb0"
   subnet_ids               = ["subnet-0422988b659d1f0a1", "subnet-0b09b067c081e2a26"]
-  control_plane_subnet_ids = ["subnet-0422988b659d1f0a1", "subnet-0b09b067c081e2a26"]
+  control_plane_subnet_ids = ["subnet-0422988b659d1f0a1", "subnet-0b09b067c081e2a26"]  
 
   eks_managed_node_group_defaults = {
     instance_types = ["t3.medium"] 
