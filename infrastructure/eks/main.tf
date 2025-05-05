@@ -12,6 +12,7 @@ module "eks" {
       desired_size   = 1
     }
   }
+role_arn = "arn:aws:iam::273354669111:role/APIEKSClusterRole"
 
   tags = {
     Environment = "prod"
