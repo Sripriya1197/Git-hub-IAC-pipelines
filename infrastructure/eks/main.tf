@@ -6,8 +6,8 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   vpc_id                   = "vpc-0a19349c1563bf053"
-  subnet_ids               = ["subnet-01abbb296e6c29197", "subnet-0d97e9a39a2d34f30"]
-  #control_plane_subnet_ids = ["", ""]  
+  subnet_ids               = ["subnet-01abbb296e6c29197", "subnet-01abbb296e6c29197"]
+  control_plane_subnet_ids = ["subnet-01abbb296e6c29197", "subnet-01abbb296e6c29197"]  
 
   eks_managed_node_group_defaults = {
     instance_types = ["t3.medium"]  
