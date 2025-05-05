@@ -1,4 +1,4 @@
-module "eks" {
+module "eks" {  
   source  = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/eks?ref=main"
   cluster_name = "my-eks-tf-cluster"
   vpc_id       = "vpc-05601e20ad2591eb0"
