@@ -7,7 +7,7 @@ module "eks" {
   eks_managed_node_groups = {
     sample-app-tf = {
       instance_types = ["t3.medium"] 
-      min_size       = 1
+      min_size       = 1  
       max_size       = 1    
       desired_size   = 1
     }
