@@ -14,7 +14,7 @@ module "ecs" {
 
       container_definitions = {
         sample-app-container = {
-          image     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/sample_app:1.0.0"
+          image     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/sample_app:1.0.0"  
           essential = true
           port_mappings = [
             {
