@@ -38,3 +38,10 @@ module "eks" {
     Terraform   = "true"
   }
 }
+output "subnet_ids" {
+  value = local.subnet_ids
+}
+
+output "control_plane_subnet_ids" {
+  value = local.control_plane_subnet_ids
+}
