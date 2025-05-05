@@ -9,7 +9,7 @@ module "eks" {
    vpc_id                   = "vpc-0a19349c1563bf053"
 
   eks_managed_node_group_defaults = {
-    instance_types = ["t3.medium"]  
+    instance_types = ["t3.medium"]   
   }
 
   eks_managed_node_groups = {  
