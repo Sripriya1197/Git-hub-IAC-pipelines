@@ -30,24 +30,23 @@ module "lambda_role" {
   ]
 }
 
-# Lambda function (using terraform-aws-modules/lambda/aws module with ECR image)
-module "lambda_function" {
-  source        = "terraform-aws-modules/lambda/aws"
+# Lambda function (using aws_lambda_function resource with ECR image)
+resource "aws_lambda_function" "lambda_function" {
   function_name = "my-lambda-function"
+  role          = module.lambda_role.role_arn
   package_type  = "Image"
   image_uri     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/lambda:1.0.0"
   timeout       = 10
   memory_size   = 128
 
-  environment_variables = {
-    ENV = "dev"
+  environment {
+    variables = {
+      ENV = "dev"
+    }
   }
-
-  # Assign IAM role via `role` argument
-  role = module.lambda_role.role_arn
 }
 
-# EventBridge rule (using terraform-aws-modules/eventbridge/aws module)
+# EventBridge rule (using aws_cloudwatch_event_rule resource)
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name        = "my-event-rule"
   description = "Trigger Lambda function based on events"
@@ -56,21 +55,21 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
   })
 }
 
-# EventBridge target to invoke Lambda (using terraform-aws-modules/eventbridge/aws module)
+# EventBridge target to invoke Lambda (using aws_cloudwatch_event_target resource)
 resource "aws_cloudwatch_event_target" "event_target" {
   rule       = aws_cloudwatch_event_rule.event_rule.name
   target_id  = "LambdaTarget"
-  arn        = module.lambda_function.function_arn
+  arn        = aws_lambda_function.lambda_function.arn
   input      = jsonencode({
     "key" = "value"
   })
 }
 
-# Lambda permission for EventBridge to invoke the Lambda function (using terraform-aws-modules/lambda/aws module)
+# Lambda permission for EventBridge to invoke the Lambda function
 resource "aws_lambda_permission" "allow_eventbridge" {
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"
-  function_name = module.lambda_function.function_name
+  function_name = aws_lambda_function.lambda_function.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.event_rule.arn
 }
