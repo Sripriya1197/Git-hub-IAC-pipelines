@@ -1,4 +1,11 @@
-data "aws_ecr_authorization_token" "token" {}
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0"
+    }
+  }
+}
 
 provider "docker" {
   registry_auth {
@@ -20,7 +27,7 @@ module "docker_image" {
 }
 
 module "lambda_function" {
-  source = "terraform-aws-modules/lambda/aws"
+  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/lambda?ref=main"
   version = "~> 7.4"
 
   function_name  = "my-docker-lambda"
