@@ -50,12 +50,12 @@ module "lambda_function" {
 module "eventbridge_rule" {
   source = "terraform-aws-modules/eventbridge/aws"
 
-  name        = "my-event-rule"
-  description = "Trigger Lambda function based on events"
-
-  event_pattern = jsonencode({
+  event_bus_name = "default"  # Default event bus, can be customized
+  event_pattern  = jsonencode({
     "source" = ["aws.events"]
   })
+
+  # We removed the unsupported arguments (name, description)
 }
 
 # EventBridge target to invoke Lambda (using terraform-aws-modules/eventbridge/aws module)
