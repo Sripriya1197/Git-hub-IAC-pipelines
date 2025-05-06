@@ -2,7 +2,7 @@
 module "lambda_role" {
   source = "terraform-aws-modules/iam/aws"
 
-  role_name = "my-lambda-execution-role"  # Use 'role_name' instead of 'name'
+  role_name = "my-lambda-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -15,7 +15,6 @@ module "lambda_role" {
     }]
   })
 
-  # Define policy directly as a single object
   policies = [
     {
       name   = "lambda-basic-execution-policy"
@@ -32,7 +31,9 @@ module "lambda_role" {
 }
 
 # Lambda function (using aws_lambda_function resource with ECR image)
-resource "aws_lambda_function" "lambda_function" {
+module "lambda_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
   function_name = "my-lambda-function"
   role          = module.lambda_role.role_arn
   package_type  = "Image"
@@ -40,37 +41,42 @@ resource "aws_lambda_function" "lambda_function" {
   timeout       = 10
   memory_size   = 128
 
-  environment {
-    variables = {
-      ENV = "dev"
-    }
+  environment_variables = {
+    ENV = "dev"
   }
 }
 
-# EventBridge rule (using aws_cloudwatch_event_rule resource)
-resource "aws_cloudwatch_event_rule" "event_rule" {
+# EventBridge Rule (using terraform-aws-modules/eventbridge/aws module)
+module "eventbridge_rule" {
+  source = "terraform-aws-modules/eventbridge/aws"
+
   name        = "my-event-rule"
   description = "Trigger Lambda function based on events"
+
   event_pattern = jsonencode({
     "source" = ["aws.events"]
   })
 }
 
-# EventBridge target to invoke Lambda (using aws_cloudwatch_event_target resource)
-resource "aws_cloudwatch_event_target" "event_target" {
-  rule       = aws_cloudwatch_event_rule.event_rule.name
+# EventBridge target to invoke Lambda (using terraform-aws-modules/eventbridge/aws module)
+module "eventbridge_target" {
+  source = "terraform-aws-modules/eventbridge/aws"
+
+  rule       = module.eventbridge_rule.name
   target_id  = "LambdaTarget"
-  arn        = aws_lambda_function.lambda_function.arn
+  arn        = module.lambda_function.lambda_arn
   input      = jsonencode({
     "key" = "value"
   })
 }
 
-# Lambda permission for EventBridge to invoke the Lambda function
-resource "aws_lambda_permission" "allow_eventbridge" {
+# Lambda permission for EventBridge to invoke the Lambda function (using terraform-aws-modules/lambda/aws module)
+module "lambda_permission" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = module.lambda_function.function_name
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda_function.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.event_rule.arn
+  source_arn    = module.eventbridge_rule.arn
 }
