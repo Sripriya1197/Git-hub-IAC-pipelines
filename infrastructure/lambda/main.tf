@@ -1,5 +1,5 @@
 module "lambda_role" {
-  source = "terraform-aws-modules/iam/aws"
+  source = "terraform-aws-modules/iam/aws//modules/iam-role"
 
   role_name = "my-lambda-execution-role"
 
@@ -18,14 +18,9 @@ module "lambda_role" {
     {
       name   = "lambda-basic-execution-policy"
       policy = jsonencode({
-        Version   = "2012-10-17"
+        Version = "2012-10-17"
         Statement = [{
-          Action   = [
-            "logs:*",
-            "cloudwatch:*",
-            "xray:*",
-            "apigateway:*" # Add API Gateway permissions
-          ]
+          Action   = ["logs:*", "cloudwatch:*", "xray:*"]
           Effect   = "Allow"
           Resource = "*"
         }]
@@ -34,51 +29,48 @@ module "lambda_role" {
   ]
 }
 
-# Lambda Function Module (using Docker image from ECR)
+# Lambda function (using terraform-aws-modules/lambda/aws module with ECR image)
 module "lambda_function" {
-  source        = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/lambda?ref=main"
+  source        = "terraform-aws-modules/lambda/aws"
   function_name = "my-lambda-function"
   role          = module.lambda_role.role_arn
   package_type  = "Image"
   image_uri     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/lambda:1.0.0"
   timeout       = 10
   memory_size   = 128
-
   environment_variables = {
     ENV = "dev"
   }
 }
 
-# API Gateway for triggering Lambda
-resource "aws_api_gateway_rest_api" "lambda_api" {
-  name        = "lambda-api"
-  description = "API for Lambda function"
+# EventBridge rule (using terraform-aws-modules/eventbridge/aws module)
+module "eventbridge_rule" {
+  source = "terraform-aws-modules/eventbridge/aws"
+
+  name        = "my-event-rule"
+  description = "Trigger Lambda function based on events"
+  event_pattern = jsonencode({
+    "source" = ["aws.events"]
+  })
 }
 
-resource "aws_api_gateway_resource" "lambda_resource" {
-  rest_api_id = aws_api_gateway_rest_api.lambda_api.id
-  parent_id   = aws_api_gateway_rest_api.lambda_api.root_resource_id
-  path_part   = "trigger"
+# EventBridge target to invoke Lambda (using terraform-aws-modules/eventbridge/aws module)
+module "eventbridge_target" {
+  source = "terraform-aws-modules/eventbridge/aws//modules/target-lambda"
+
+  rule       = module.eventbridge_rule.name
+  target_id  = "LambdaTarget"
+  lambda_arn = module.lambda_function.function_arn
+  input      = jsonencode({
+    "key" = "value"
+  })
 }
 
-resource "aws_api_gateway_method" "lambda_method" {
-  rest_api_id   = aws_api_gateway_rest_api.lambda_api.id
-  resource_id   = aws_api_gateway_resource.lambda_resource.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
+# Lambda permission for EventBridge to invoke the Lambda function (using terraform-aws-modules/lambda/aws module)
+module "lambda_permission" {
+  source = "terraform-aws-modules/lambda/aws//modules/permission"
 
-resource "aws_api_gateway_integration" "lambda_integration" {
-  rest_api_id = aws_api_gateway_rest_api.lambda_api.id
-  resource_id = aws_api_gateway_resource.lambda_resource.id
-  http_method = aws_api_gateway_method.lambda_method.http_method
-  integration_http_method = "POST"
-  type = "AWS_PROXY"
-  uri  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${module.lambda_function.lambda_function_arn}/invocations"
-}
-
-resource "aws_lambda_permission" "allow_api_gateway" {
-  action        = "lambda:InvokeFunction"
-  function_name = module.lambda_function.lambda_function_name
-  principal     = "apigateway.amazonaws.com"
+  function_name = module.lambda_function.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = module.eventbridge_rule.arn
 }
