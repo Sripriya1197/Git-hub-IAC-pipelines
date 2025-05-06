@@ -36,11 +36,11 @@ jobs:
       - name: Terraform Init
         run: |
           export TF_LOG=DEBUG
-          terraform -chdir=infrastructure/lambda init -var-file=variable-dev.tf
+          terraform -chdir=infrastructure/lambda init 
 
       - name: Terraform fmt
         run: terraform fmt
-        working-directory: infrastructure/lambda -var-file=variable-dev.tf
+        working-directory: infrastructure/lambda 
 
       - name: Terraform plan
         run: terraform plan -out=tfplan -var-file=variable-dev.tf
