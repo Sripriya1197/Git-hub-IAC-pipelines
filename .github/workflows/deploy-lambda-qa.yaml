@@ -44,7 +44,7 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan -out=tfplan
-        working-directory: infrastructure/lambda
+        working-directory: infrastructure/lambda -var-file=variable-qa.tf
 
       - name: Show Terraform Plan with Debugging
         run: |
