@@ -43,7 +43,7 @@ jobs:
         working-directory: infrastructure/lambda 
 
       - name: Terraform plan
-        run: terraform plan -out=tfplan -var-file=variable-dev.tf
+        run: terraform plan -out=tfplan -var-file=dev.tfvars
         working-directory: infrastructure/lambda
 
       - name: Show Terraform Plan with Debugging
@@ -54,4 +54,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform -chdir=infrastructure/lambda apply -auto-approve -var-file=variable-dev.tf
+        run: terraform -chdir=infrastructure/lambda apply -auto-approve -var-file=dev.tfvars
