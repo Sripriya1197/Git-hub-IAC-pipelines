@@ -36,5 +36,5 @@ module "lambda_function" {
   package_type   = "Image"
   image_uri      = module.docker_image.image_uri
 
-  role = aws_iam_role.lambda_role.arn  # Attach the IAM role here
+  role ="arn:aws:iam::273354669111:role/service-role/convertFC-role-756yl0gt"
 }
