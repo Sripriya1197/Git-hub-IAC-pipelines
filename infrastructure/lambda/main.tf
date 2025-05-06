@@ -1,11 +1,4 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0"
-    }
-  }
-}
+data "aws_ecr_authorization_token" "token" {}
 
 provider "docker" {
   registry_auth {
@@ -15,25 +8,38 @@ provider "docker" {
   }
 }
 
-data "aws_ecr_authorization_token" "token" {}
+resource "aws_iam_role" "lambda_role" {
+  name               = "my-lambda-role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+}
+
+data "aws_iam_policy_document" "lambda_assume_role_policy" {
+  statement {
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  }
+}
 
 module "docker_image" {
   source = "terraform-aws-modules/lambda/aws//modules/docker-build"
-  
-  create_ecr_repo = true
-  ecr_repo        = "my-lambda-ecr-repo"  
+  version = "~> 7.4"
 
-  source_path     = "."  # Assuming Dockerfile is in the same directory as main.tf
+  create_ecr_repo = true
+  ecr_repo        = "my-lambda-ecr-repo"
+
+  source_path     = "." 
   image_tag       = "1.0"
   use_image_tag   = true
 }
 
 module "lambda_function" {
   source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/lambda?ref=main"
+  version = "~> 7.4"
 
   function_name  = "my-docker-lambda"
   create_package = false
+  package_type   = "Image"
+  image_uri      = module.docker_image.image_uri
 
-  package_type = "Image"
-  image_uri    = module.docker_image.image_uri
+  role = aws_iam_role.lambda_role.arn  
 }
