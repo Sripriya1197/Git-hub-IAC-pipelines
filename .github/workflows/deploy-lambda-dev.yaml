@@ -1,4 +1,4 @@
-name: Terraform lambda 
+name: Terraform lambda-dev
 
 on:
   push:  
