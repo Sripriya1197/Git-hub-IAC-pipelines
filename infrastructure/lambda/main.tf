@@ -1,4 +1,4 @@
-# IAM role for Lambda execution (using terraform-aws-modules/iam/aws module)
+# Lambda role module (using terraform-aws-modules/iam/aws module)
 module "lambda_role" {
   source = "terraform-aws-modules/iam/aws"
 
@@ -30,7 +30,7 @@ module "lambda_role" {
   ]
 }
 
-# Lambda function (using aws_lambda_function resource with ECR image)
+# Lambda function (using terraform-aws-modules/lambda/aws module)
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -50,28 +50,24 @@ module "lambda_function" {
 module "eventbridge_rule" {
   source = "terraform-aws-modules/eventbridge/aws"
 
-  event_bus_name = "default"  # Default event bus, can be customized
-  event_pattern  = jsonencode({
+  rule_name = "my-event-rule"
+  event_pattern = jsonencode({
     "source" = ["aws.events"]
   })
 
-  # We removed the unsupported arguments (name, description)
+  # event_bus_name is not needed, removing it
 }
 
 # EventBridge target to invoke Lambda (using terraform-aws-modules/eventbridge/aws module)
 module "eventbridge_target" {
   source = "terraform-aws-modules/eventbridge/aws"
 
-  rule_arn  = module.eventbridge_rule.arn  # Corrected 'rule' to 'rule_arn'
-  targets = [
-    {
-      arn = module.lambda_function.lambda_arn
-      id  = "LambdaTarget"  # Corrected 'target_id' to 'id'
-      input = jsonencode({
-        "key" = "value"
-      })
-    }
-  ]
+  rule_name  = module.eventbridge_rule.rule_name  # Corrected to rule_name instead of rule_arn
+  target_id  = "LambdaTarget"
+  arn        = module.lambda_function.lambda_arn
+  input      = jsonencode({
+    "key" = "value"
+  })
 }
 
 # Lambda permission for EventBridge to invoke the Lambda function (using terraform-aws-modules/lambda/aws module)
