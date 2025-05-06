@@ -28,7 +28,7 @@ module "docker_image" {
 }
 
 module "lambda_function" {
-  source = "git::https://github.com/Sripriya1197/terraform-module.git//modules/aws/lambda?ref=main"
+  source ="terraform-aws-modules/lambda/aws"
   version = "~> 7.4"
 
   function_name  = "my-docker-lambda"
