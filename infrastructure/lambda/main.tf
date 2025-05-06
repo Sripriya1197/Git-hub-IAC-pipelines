@@ -48,9 +48,7 @@ module "lambda_function" {
 }
 
 # EventBridge rule (using terraform-aws-modules/eventbridge/aws module)
-module "eventbridge_rule" {
-  source = "terraform-aws-modules/eventbridge/aws"
-
+resource "aws_cloudwatch_event_rule" "event_rule" {
   name        = "my-event-rule"
   description = "Trigger Lambda function based on events"
   event_pattern = jsonencode({
@@ -59,10 +57,8 @@ module "eventbridge_rule" {
 }
 
 # EventBridge target to invoke Lambda (using terraform-aws-modules/eventbridge/aws module)
-module "eventbridge_target" {
-  source = "terraform-aws-modules/eventbridge/aws"
-
-  rule       = module.eventbridge_rule.name
+resource "aws_cloudwatch_event_target" "event_target" {
+  rule       = aws_cloudwatch_event_rule.event_rule.name
   target_id  = "LambdaTarget"
   arn        = module.lambda_function.function_arn
   input      = jsonencode({
@@ -76,5 +72,5 @@ resource "aws_lambda_permission" "allow_eventbridge" {
   action        = "lambda:InvokeFunction"
   function_name = module.lambda_function.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = module.eventbridge_rule.arn
+  source_arn    = aws_cloudwatch_event_rule.event_rule.arn
 }
