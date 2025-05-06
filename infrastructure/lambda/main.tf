@@ -1,22 +1,17 @@
-data "aws_ecr_authorization_token" "token" {}
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.4.0"
+    }
+  }
+}
 
 provider "docker" {
   registry_auth {
     address  = "273354669111.dkr.ecr.ap-south-1.amazonaws.com"
     username = data.aws_ecr_authorization_token.token.user_name
     password = data.aws_ecr_authorization_token.token.password
-  }
-}
-
-resource "aws_iam_role" "lambda_role" {
-  name               = "my-lambda-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-}
-
-data "aws_iam_policy_document" "lambda_assume_role_policy" {
-  statement {
-    actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
   }
 }
 
@@ -27,13 +22,13 @@ module "docker_image" {
   create_ecr_repo = true
   ecr_repo        = "my-lambda-ecr-repo"
 
-  source_path     = "." 
+  source_path     = "."   # Make sure this points to the correct directory
   image_tag       = "1.0"
   use_image_tag   = true
 }
 
 module "lambda_function" {
-  source = "terraform-aws-modules/lambda/aws"
+  source = "git::https://github.com/Sripriya1197/terraform-module.git//modules/aws/lambda?ref=main"
   version = "~> 7.4"
 
   function_name  = "my-docker-lambda"
@@ -41,5 +36,5 @@ module "lambda_function" {
   package_type   = "Image"
   image_uri      = module.docker_image.image_uri
 
-  role = aws_iam_role.lambda_role.arn  
+  role = aws_iam_role.lambda_role.arn  # Attach the IAM role here
 }
