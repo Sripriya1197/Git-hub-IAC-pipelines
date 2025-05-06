@@ -3,7 +3,7 @@ module "docker_image" {
   version = "~> 7.4"
 
   create_ecr_repo = true
-  ecr_repo        = "my-lambda-ecr-repo"
+  ecr_repo        = "my-lambda-ecr-repo"  
 
   source_path     = "."       
   image_tag       = "1.0"
