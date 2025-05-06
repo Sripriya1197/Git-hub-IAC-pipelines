@@ -3,7 +3,7 @@ module "lambda_function" {
   version = "~> 7.4"
  
   function_name  = var.function_name
-  create_package = false
+  create_package = false 
   package_type   = "Image"
   image_uri      = var.image_uri
 }   
