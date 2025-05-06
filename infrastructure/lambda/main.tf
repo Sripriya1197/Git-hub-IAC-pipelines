@@ -36,5 +36,4 @@ module "lambda_function" {
   package_type   = "Image"
   image_uri      = module.docker_image.image_uri
 
-  role ="arn:aws:iam::273354669111:role/service-role/convertFC-role-756yl0gt"
 }
