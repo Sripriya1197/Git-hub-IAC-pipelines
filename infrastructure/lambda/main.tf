@@ -2,7 +2,7 @@
 module "lambda_role" {
   source = "terraform-aws-modules/iam/aws"
 
-  name = "my-lambda-execution-role"
+  role_name = "my-lambda-execution-role"  # Use 'role_name' instead of 'name'
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -15,6 +15,7 @@ module "lambda_role" {
     }]
   })
 
+  # Define policy directly as a single object
   policies = [
     {
       name   = "lambda-basic-execution-policy"
