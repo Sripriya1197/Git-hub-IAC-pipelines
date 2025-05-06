@@ -36,14 +36,14 @@ jobs:
       - name: Terraform Init
         run: |
           export TF_LOG=DEBUG
-          terraform -chdir=infrastructure/lambda init
+          terraform -chdir=infrastructure/lambda init -var-file=variable-dev.tf
 
       - name: Terraform fmt
         run: terraform fmt
-        working-directory: infrastructure/lambda
+        working-directory: infrastructure/lambda -var-file=variable-dev.tf
 
       - name: Terraform plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -var-file=variable-dev.tf
         working-directory: infrastructure/lambda
 
       - name: Show Terraform Plan with Debugging
@@ -54,4 +54,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform -chdir=infrastructure/lambda apply -auto-approve
+        run: terraform -chdir=infrastructure/lambda apply -auto-approve -var-file=variable-dev.tf
