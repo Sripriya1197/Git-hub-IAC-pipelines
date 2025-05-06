@@ -62,12 +62,16 @@ module "eventbridge_rule" {
 module "eventbridge_target" {
   source = "terraform-aws-modules/eventbridge/aws"
 
-  rule       = module.eventbridge_rule.name
-  target_id  = "LambdaTarget"
-  arn        = module.lambda_function.lambda_arn
-  input      = jsonencode({
-    "key" = "value"
-  })
+  rule_arn  = module.eventbridge_rule.arn  # Corrected 'rule' to 'rule_arn'
+  targets = [
+    {
+      arn = module.lambda_function.lambda_arn
+      id  = "LambdaTarget"  # Corrected 'target_id' to 'id'
+      input = jsonencode({
+        "key" = "value"
+      })
+    }
+  ]
 }
 
 # Lambda permission for EventBridge to invoke the Lambda function (using terraform-aws-modules/lambda/aws module)
