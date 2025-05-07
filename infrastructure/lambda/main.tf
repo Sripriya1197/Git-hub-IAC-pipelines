@@ -6,4 +6,4 @@ module "lambda_function" {
   create_package = false 
   package_type   = "Image"
   image_uri      = var.image_uri
-}      
+}       
