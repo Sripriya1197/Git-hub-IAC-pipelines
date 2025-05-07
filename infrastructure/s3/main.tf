@@ -4,7 +4,7 @@ provider "aws" {
 module "s3_bucket" {
    source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/s3?ref=main"
 
-  bucket = "my-terraform-bucket-s3"
+  bucket = var.bucket
   acl    = "private"
 
   control_object_ownership = true
