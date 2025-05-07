@@ -1,1 +1,1 @@
-cluster_name="my-ecs-dev-cluster
+cluster_name="my-ecs-dev-cluster"
