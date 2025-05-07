@@ -3,7 +3,7 @@ module "ecs" {
  
 
   cluster_name = var.cluster_name  
-  create_cloudwatch_log_group = false    
+  create_cloudwatch_log_group = false      
    
   services = {
     sample-app = {
