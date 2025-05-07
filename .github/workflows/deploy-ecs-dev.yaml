@@ -15,6 +15,7 @@ jobs:
     env:
       AWS_REGION: 'ap-south-1'    
       TF_VERSION: '1.4.0'
+      ENVIRONMENT: dev  # Set your environment (or use GitHub secret: secrets.ENVIRONMENT)
 
     steps:
       - name: Checkout repository
@@ -43,7 +44,7 @@ jobs:
         working-directory: infrastructure/ecs-cluster
 
       - name: Terraform plan
-        run: terraform plan -out=tfplan -var-file=dev.tfvars
+        run: terraform plan -var="environment=${{ env.ENVIRONMENT }}" -out=tfplan
         working-directory: infrastructure/ecs-cluster
 
       - name: Show Terraform Plan with Debugging
@@ -54,4 +55,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' 
-        run: terraform -chdir=infrastructure/ecs-cluster apply -auto-approve -var-file=dev.tfvars
+        run: terraform -chdir=infrastructure/ecs-cluster apply -auto-approve -var="environment=${{ env.ENVIRONMENT }}" tfplan
