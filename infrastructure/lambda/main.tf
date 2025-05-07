@@ -4,6 +4,6 @@ module "lambda_function" {
   
   function_name  = var.function_name
   create_package = false 
-  package_type   = "Image"
+  package_type   = "Image" 
   image_uri      = var.image_uri
 }       
