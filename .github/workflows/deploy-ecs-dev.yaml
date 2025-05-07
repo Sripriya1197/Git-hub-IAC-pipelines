@@ -1,4 +1,4 @@
-name: Terraform ECS CI/CD
+name: Terraform ECS-DEV
 
 on:
   push:
