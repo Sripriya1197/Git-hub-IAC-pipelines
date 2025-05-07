@@ -28,6 +28,7 @@ module "ecs" {
         awslogs-group         = "/aws/ecs/sample-app-${var.environment}/sample-app-container"
         awslogs-region        = "ap-south-1"
         awslogs-stream-prefix = "ecs"
+        awslogs-create-group  = "false"
       }
     }
          }
