@@ -1,4 +1,4 @@
-name: Terraform-s3 CI/CD
+name: s3-DEV-CI/CD
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
         working-directory: infrastructure/s3
 
       - name: Terraform plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -var-file=dev.tfvars
         working-directory: infrastructure/s3
         
       - name: Show Terraform Plan with Debugging
@@ -54,4 +54,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform -chdir=infrastructure/s3 apply -auto-approve
+        run: terraform -chdir=infrastructure/s3 apply -auto-approve -var-file=dev.tfvars
