@@ -6,7 +6,7 @@ module "ecs" {
   create_cloudwatch_log_group = false     
    
   services = {
-    sample-app = {
+    sample-app = { 
       cpu    = 256
       memory = 512   
   
