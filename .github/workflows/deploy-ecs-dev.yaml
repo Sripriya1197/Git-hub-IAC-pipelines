@@ -44,7 +44,7 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan -out=tfplan
-        working-directory: infrastructure/ecs-cluster -var-file=variable-dev.tf
+        working-directory: infrastructure/ecs-cluster -var-file=variable-dev.tfvars
 
       - name: Show Terraform Plan with Debugging
         run: |
@@ -54,4 +54,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' 
-        run: terraform -chdir=infrastructure/ecs-cluster apply -auto-approve -var-file=variable-dev.tf
+        run: terraform -chdir=infrastructure/ecs-cluster apply -auto-approve -var-file=variable-dev.tfvars
