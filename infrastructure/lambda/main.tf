@@ -7,3 +7,4 @@ module "lambda_function" {
   package_type   = "Image" 
   image_uri      = var.image_uri
 }       
+ 
