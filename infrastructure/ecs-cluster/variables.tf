@@ -3,7 +3,8 @@ variable "cluster_name" {
   type        = string
   default     = ""
 }
-variable "environment" {
+variable "env" {
   type        = string
   description = "Environment name like dev, stage, prod"
+  default     =""
 }
