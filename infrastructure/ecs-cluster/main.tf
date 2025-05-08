@@ -26,7 +26,7 @@ module "ecs" {
          log_configuration = {
          log_driver = "awslogs"
          options = {
-        awslogs-group         = "/aws/ecs/sample-app-${var.environment}/sample-app-container"
+        awslogs-group         = "/aws/ecs/sample-app-${var.env}/sample-app-container"
         awslogs-region        = "ap-south-1"
         awslogs-stream-prefix = "ecs"
        #awslogs-create-group  = "false"
