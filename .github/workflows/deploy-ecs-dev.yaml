@@ -44,13 +44,13 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan -out=tfplan -var-file=dev.tfvars
-        working-directory: infrastructure/ecs-cluster 
+      
 
       - name: Show Terraform Plan with Debugging
         run: |
           export TF_LOG=DEBUG
           terraform show tfplan
-        working-directory: infrastructure/ecs-cluster
+        
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' 
