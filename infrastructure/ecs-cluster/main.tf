@@ -1,6 +1,6 @@
 module "ecs" {  
   source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"  
- 
+  
 
   cluster_name = var.cluster_name    
   create_cloudwatch_log_group = true
