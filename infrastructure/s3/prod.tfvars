@@ -1,1 +1,1 @@
-bucket="my-terraform-bucket-prod-s3"
+bucket="my-0805-bucket-prod-s3"
