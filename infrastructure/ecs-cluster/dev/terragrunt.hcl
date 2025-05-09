@@ -5,7 +5,7 @@ terraform {
 inputs = {
   cluster_name              = "dev-ecs-cluster"
   cloudwatch_log_group_name = "/aws/ecs/sample-app-dev"
-  create_cluster            = true
+  create                    = true
 
   services = {
     sample-app = {
