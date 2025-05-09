@@ -32,6 +32,12 @@ jobs:
          chmod +x terragrunt
          sudo mv terragrunt /usr/local/bin/
 
+      - name: Check Terraform Version
+        run: terraform --version
+
+      - name: Check Terragrunt Version
+        run: terragrunt --version
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
