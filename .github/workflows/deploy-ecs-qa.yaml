@@ -2,47 +2,56 @@ name: Deploy ECS qa
 
 on:
   push:
+    paths:
+      - 'infrastructure/ecs-cluster/qa/**'
+      - '.github/workflows/deploy-ecs-qa.yaml'
     branches:
       - main
-    paths:
-      - 'infrastructure/ecs/qa/**'
-      - '.github/workflows/deploy-ecs-qa.yaml'
 
 jobs:
-  terraform:      
-    name: 'Terraform Init, Format, Validate, Plan, Apply'    
-    runs-on: ubuntu-latest 
+  deploy-ecs-qa:
+    name: Deploy ECS qa using Terragrunt
+    runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: 'ap-south-1'    
-      TF_VERSION: '1.11.3'
+      AWS_REGION: ap-south-1
+      CHECKPOINT_DISABLE: 1 
+      TERRAFORM_CLI_PATH: /usr/local/bin/terraform
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Install Terragrunt
-        run: |
-         curl -L -o terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.56.3/terragrunt_linux_amd64
-         chmod +x terragrunt
-         sudo mv terragrunt /usr/local/bin/
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terragrunt Init
+      - name: Set up Terraform  v1.6.6
+        run: |
+          wget https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_amd64.zip
+          unzip terraform_1.6.6_linux_amd64.zip
+          chmod +x terraform
+          mv terraform /usr/local/bin/terraform
+
+      - name: Install Terragrunt
+        run: |
+          curl -o terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.56.0/terragrunt_linux_amd64
+          sudo chmod +x terragrunt
+          sudo mv terragrunt /usr/local/bin/ 
+          terragrunt --version
+
+      - name: Run Terragrunt Init
+        working-directory: infrastructure/ecs-cluster/qa
         run: terragrunt init
 
-      - name: Terragrunt Apply
+      - name: Run Terragrunt Plan
+        working-directory: infrastructure/ecs-cluster/qa
+        run: terragrunt plan
+
+      - name: Run Terragrunt Apply
+        working-directory: infrastructure/ecs-cluster/qa
         run: terragrunt apply -auto-approve
-        
