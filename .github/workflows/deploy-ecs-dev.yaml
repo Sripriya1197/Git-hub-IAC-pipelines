@@ -15,7 +15,8 @@ jobs:
 
     env:
       AWS_REGION: ap-south-1
-      CHECKPOINT_DISABLE: 1  # Disable Terraform update check to avoid Terragrunt version parsing error
+      CHECKPOINT_DISABLE: 1 
+      TERRAFORM_CLI_PATH: /usr/local/bin/terraform
 
     steps:
       - name: Checkout repo
