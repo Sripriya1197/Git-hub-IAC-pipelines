@@ -44,5 +44,5 @@ jobs:
         run: terragrunt init
 
       - name: Terragrunt Apply
-        run: terragrunt apply -auto-approve
+        run: terragrunt apply -auto-approve 
         

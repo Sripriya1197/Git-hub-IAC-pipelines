@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'infrastructure/ecs/qa/**'
+      - '.github/workflows/deploy-ecs-qa.yaml'
 
 jobs:
   terraform:      

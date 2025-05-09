@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'infrastructure/ecs/prod/**'
+      - '.github/workflows/deploy-ecs-prod.yaml'
 
 jobs:
   terraform:      
