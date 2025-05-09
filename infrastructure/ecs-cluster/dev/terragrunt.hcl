@@ -1,5 +1,5 @@
 terraform {
-  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
+  source = "tfr:///terraform-aws-modules/ecs/aws?version=5.12.1"
 }
 
 inputs = {
