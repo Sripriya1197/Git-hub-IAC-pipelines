@@ -1,11 +1,11 @@
-name: Terraform ECS-PROD
+name: Deploy ECS prod
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'infrastructure/ecs-cluster/**'
+      - 'infrastructure/ecs/prod/**'
 
 jobs:
   terraform:      
@@ -25,6 +25,12 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Install Terragrunt
+        run: |
+         curl -L -o terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.56.3/terragrunt_linux_amd64
+         chmod +x terragrunt
+         sudo mv terragrunt /usr/local/bin/
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -33,25 +39,9 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Init
-        run: |
-          export TF_LOG=DEBUG
-          terraform -chdir=infrastructure/ecs-cluster init
+      - name: Terragrunt Init
+        run: terragrunt init
 
-      - name: Terraform fmt
-        run: terraform fmt
-        working-directory: infrastructure/ecs-cluster
-
-      - name: Terraform plan
-        run: terraform plan -out=tfplan -var-file=prod.tfvars
-        working-directory: infrastructure/ecs-cluster 
-
-      - name: Show Terraform Plan with Debugging
-        run: |
-          export TF_LOG=DEBUG
-          terraform show tfplan
-        working-directory: infrastructure/ecs-cluster
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' 
-        run: terraform -chdir=infrastructure/ecs-cluster apply -auto-approve -var-file=prod.tfvars
+      - name: Terragrunt Apply
+        run: terragrunt apply -auto-approve
+        
