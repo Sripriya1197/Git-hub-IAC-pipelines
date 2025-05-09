@@ -7,7 +7,7 @@ inputs = {
   cloudwatch_log_group_name = "/aws/ecs/sample-app-prod"
 
   services = {
-    sample-app = {
+    sample-app = { 
       cpu    = 256
       memory = 512
 
