@@ -1,2 +1,0 @@
-cluster_name="my-ecs-qa-cluster"
-environment = "prod"
