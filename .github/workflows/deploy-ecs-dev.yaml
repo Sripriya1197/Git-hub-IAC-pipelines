@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'infrastructure/ecs-cluster/dev/**'
+      - '.github/workflows/deploy-ecs-prod.yaml'
     branches:
       - main
 
