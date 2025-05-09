@@ -2,7 +2,7 @@ terraform {
   source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ecs?ref=main"
 }
 
- inputs = {
+inputs = {
   cluster_name              = "dev-ecs-cluster"
   cloudwatch_log_group_name = "/aws/ecs/sample-app-dev"
 
@@ -21,7 +21,7 @@ terraform {
             {
               containerPort = 80
               protocol      = "tcp"
-            }
+            } 
           ]
           log_configuration = {
             log_driver = "awslogs"
