@@ -25,6 +25,3 @@ jobs:
           rm -rf ~/.terraform
           rm -f ~/.terraform.lock.hcl
           rm -rf ~/.terragrunt-cache
-
-      - name: Terragrunt Init
-        run: terragrunt init
