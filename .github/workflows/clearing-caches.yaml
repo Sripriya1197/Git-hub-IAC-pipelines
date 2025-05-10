@@ -1,0 +1,20 @@
+name: Clear Terraform & Terragrunt Cache
+
+on:
+  workflow_dispatch:
+
+jobs:
+  clear-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Remove Terraform and Terragrunt cache
+        run: |
+          rm -rf ~/.terraform
+          rm -f ~/.terraform.lock.hcl
+          rm -rf ~/.terragrunt-cache
+
+      - name: Terragrunt Init
+        run: terragrunt init
