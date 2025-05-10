@@ -1,7 +1,11 @@
 name: Clear Terraform & Terragrunt Cache
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/clearing-caches.yaml'
+    branches:
+      - main
 
 jobs:
   clear-cache:
@@ -9,7 +13,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Remove Terraform and Terragrunt cache
         run: |
           rm -rf ~/.terraform
