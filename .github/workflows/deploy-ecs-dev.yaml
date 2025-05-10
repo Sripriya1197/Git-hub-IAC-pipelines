@@ -13,7 +13,7 @@ jobs:
     name: Deploy ECS Dev using Terragrunt
     runs-on: ubuntu-latest
 
-    env:
+    env: 
       AWS_REGION: ap-south-1
       CHECKPOINT_DISABLE: 1 
       TERRAFORM_CLI_PATH: /usr/local/bin/terraform
