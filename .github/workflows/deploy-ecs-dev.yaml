@@ -52,6 +52,6 @@ jobs:
         working-directory: infrastructure/ecs-cluster/dev
         run: terragrunt plan
 
-      - name: Run Terragrunt Apply
+      - name: Run Terragrunt Apply 
         working-directory: infrastructure/ecs-cluster/dev
         run: terragrunt apply -auto-approve
