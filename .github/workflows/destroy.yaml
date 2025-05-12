@@ -33,10 +33,10 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Run Terraform Init
-        #working-directory: infrastructure/ecs-cluster/dev
+        working-directory: infrastructure/ecs-cluster
         run: terraform init
 
 
       - name: Destroy infrastructure with Terraform
         run: terraform destroy -auto-approve
-        working-directory: infrastructure/ecs/de
+        working-directory: infrastructure/ecs-cluster
