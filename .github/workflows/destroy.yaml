@@ -32,11 +32,11 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Run Terragrunt Init
-        working-directory: infrastructure/ecs-cluster/dev
-        run: terragrunt init
+      - name: Run Terraform Init
+        #working-directory: infrastructure/ecs-cluster/dev
+        run: terraform init
 
 
-      - name: Destroy infrastructure with Terragrunt
-        run: terragrunt destroy -auto-approve
-        working-directory: infrastructure/ecs/dev
+      - name: Destroy infrastructure with Terraform
+        run: terraform destroy -auto-approve
+        working-directory: infrastructure/ecs/de
