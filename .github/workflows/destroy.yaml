@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - '.github/workflows/destroy.yaml'
-    branches:
+    branches: 
       - main
 
 jobs:
