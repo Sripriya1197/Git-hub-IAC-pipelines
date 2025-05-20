@@ -1,15 +1,12 @@
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3.git//?ref=v5.9.1"
+  source = "git::https://github.com/Sripriya1197/terraform-module/tree/main/.modules/aws/s3"
 }
 
 inputs = {
-     bucket =my-tf-s3-dev-2025
-     acl    = "private"
-
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
-
-  versioning = {
-    enabled = true
+  bucket_name = "my-dev-bucket-1234"
+  acl         = "private"
+  tags = {
+    Environment = "dev"
+    Owner       = "dev-team"
   }
 }
