@@ -11,5 +11,5 @@ inputs = {
   tags = {
     Environment = "dev"
     Owner       = "dev-team"
-  }
+  }  
 }
