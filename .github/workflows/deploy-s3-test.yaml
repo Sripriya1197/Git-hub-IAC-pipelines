@@ -44,14 +44,18 @@ jobs:
           sudo mv terragrunt /usr/local/bin/ 
           terragrunt --version
 
+      - name: Change Directory
+        run: | 
+          cd infrastructure/s3-test/dev
+
       - name: Run Terragrunt Init
-        working-directory: infrastructure/s3-test/dev
-        run: terragrunt init
+        run: | 
+          terragrunt init
 
       - name: Run Terragrunt Plan
-        working-directory: infrastructure/s3-test/dev
-        run: terragrunt plan
+        run: | 
+          terragrunt plan
 
       - name: Run Terragrunt Apply 
-        working-directory: infrastructure/s3-test/dev
-        run: terragrunt apply -auto-approve
+        run: | 
+          terragrunt apply -auto-approve
