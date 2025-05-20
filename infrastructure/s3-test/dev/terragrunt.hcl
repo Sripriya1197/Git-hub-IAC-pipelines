@@ -12,4 +12,4 @@ inputs = {
     Environment = "dev"
     Owner       = "dev-team"
   }  
-}
+}   
