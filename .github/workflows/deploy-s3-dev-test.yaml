@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'infrastructure/s3-test/dev/**'
-      - '.github/workflows/deploy-s3-test-dev.yaml'
+      - '.github/workflows/deploy-s3-dev-test.yaml'
    
 jobs:
   terragrunt:

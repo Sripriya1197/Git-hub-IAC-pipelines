@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  bucket = "my-qa-bucket-001197-tf"
+  bucket = "my-qa-bucket-2105-tf"
   acl         = "private"
   tags = {
     Environment = "qa"

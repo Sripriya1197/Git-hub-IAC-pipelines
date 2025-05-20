@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  bucket = "my-prod-bucket-001197-tf"
+  bucket = "my-prod-bucket-2105-tf"
   acl         = "private"
   tags = {
     Environment = "prod"
