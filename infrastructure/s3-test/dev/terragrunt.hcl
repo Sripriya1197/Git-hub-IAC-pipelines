@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  bucket = "my-dev-bucket-20052025"
+  bucket = "my-dev-bucket"
   acl         = "private"
   tags = {
     Environment = "dev"
