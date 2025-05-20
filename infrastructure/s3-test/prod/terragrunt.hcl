@@ -1,8 +1,12 @@
-include {
-  path = find_in_parent_folders()
+terraform {
+  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/s3"
 }
 
 inputs = {
-  bucket_name = "my-prod-bucket-unique-name"
-  region      = "ap-south-1"
-}
+  bucket = "my-prod-bucket-001197-tf"
+  acl         = "private"
+  tags = {
+    Environment = "prod"
+    Owner       = "prod-team"
+  }  
+}    
