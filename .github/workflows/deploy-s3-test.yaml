@@ -9,7 +9,7 @@ on:
       - main 
 
 jobs:
-  deploy-ecs-dev:
+  deploy-s3-dev:
     name: Deploy s3-test Dev using Terragrunt
     runs-on: ubuntu-latest
 
@@ -44,18 +44,14 @@ jobs:
           sudo mv terragrunt /usr/local/bin/ 
           terragrunt --version
 
-      - name: Change Directory
-        run: | 
-          cd infrastructure/s3-test/dev
-
       - name: Run Terragrunt Init
-        run: | 
-          terragrunt init
+        run: terragrunt init
+        working-directory: infrastructure/s3-test/dev
 
       - name: Run Terragrunt Plan
-        run: | 
-          terragrunt plan
+        run: terragrunt plan
+        working-directory: infrastructure/s3-test/dev
 
       - name: Run Terragrunt Apply 
-        run: | 
-          terragrunt apply -auto-approve
+        run: terragrunt apply -auto-approve
+        working-directory: infrastructure/s3-test/dev
