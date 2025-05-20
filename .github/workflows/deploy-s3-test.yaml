@@ -48,7 +48,7 @@ jobs:
         run: |
           terragrunt init
           terragrunt validate-inputs
-          terragrunt plan
+          TERRAGRUNT_DEBUG=true terragrunt plan
 
       - name: Terragrunt Apply (Dev)
         working-directory: infrastructure/s3-test/dev
