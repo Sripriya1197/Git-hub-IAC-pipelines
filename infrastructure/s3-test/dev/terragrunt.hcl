@@ -1,5 +1,8 @@
+include {
+  path = find_in_parent_folders()
+}
 terraform {
-  source = "git::https://github.com/Sripriya1197/terraform-module/tree/main/.modules/aws/s3?ref=main"
+  source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/s3?ref=main"
 }
 
 inputs = {
