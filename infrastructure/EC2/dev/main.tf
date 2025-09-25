@@ -10,13 +10,14 @@ module "ec2_instance" {
      key_name           =   var.key_name
      instance_type      =   var.instance_type
      subnet_id          =   var.subnet_id
-     vpc_security_group_ids = var.
+     vpc_security_group_ids = var.vpc_security_group_ids
 
    tags ={
      Name = var.instance_name
    }
 
 }
+
 
 
 
