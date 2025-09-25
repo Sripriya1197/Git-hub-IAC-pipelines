@@ -1,7 +1,7 @@
 provider "aws" {
   region = "ap-south-1" 
 }
-module "s3_bucket" {
+module "ec2_instance" {
    source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ec2?ref=main"
 
   //   count              =   var.count    
@@ -17,5 +17,6 @@ module "s3_bucket" {
    }
 
 }
+
 
 
