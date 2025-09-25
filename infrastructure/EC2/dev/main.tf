@@ -1,0 +1,19 @@
+provider "aws" {
+  region = "ap-south-1" 
+}
+module "s3_bucket" {
+   source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ec2?ref=main"
+
+  //   count              =   var.count 
+     region             =   var.region
+     ami                =   var.region
+     key_name           =   var.key_name
+     instance_type      =   var.instance_type
+     subnet_id          =   var.subnet_id
+     vpc_security_group_ids = var.
+
+   tags ={
+     Name = var.instance_name
+   }
+
+}

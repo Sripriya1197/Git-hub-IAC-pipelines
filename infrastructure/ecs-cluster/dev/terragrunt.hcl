@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  cluster_name              = "dev-ecs-cluster"
+  cluster_name              = "dev-Spring-ecs-cluster"
   cloudwatch_log_group_name = "/aws/ecs/sample-app-dev"
   create                    = true
 
@@ -16,7 +16,7 @@ inputs = {
 
       container_definitions = {
         sample-app-container = {
-          image     = "273354669111.dkr.ecr.ap-south-1.amazonaws.com/sample_app:1.0.0"
+          image     = "696659996381.dkr.ecr.us-east-1.amazonaws.com/dev/sample-spring"
           essential = true
           port_mappings = [
             {
@@ -27,7 +27,7 @@ inputs = {
           log_configuration = {
             log_driver = "awslogs"
             options = {
-              awslogs-group         = "/aws/ecs/sample-app-dev/sample-app-container"
+              awslogs-group         = "/aws/ecs/my-new-app-dev"
               awslogs-region        = "ap-south-1"
               awslogs-stream-prefix = "ecs"
             }
@@ -35,7 +35,7 @@ inputs = {
         }
       }
 
-      subnet_ids = ["subnet-0697385b41cf20408"]
+      subnet_ids = ["subnet-07e2edb18a86869ee"]
 
       security_group_rules = {
         allow_http = {
