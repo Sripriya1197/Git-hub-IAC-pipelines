@@ -4,7 +4,7 @@ provider "aws" {
 module "ec2_instance" {
    source = "git::https://github.com/Sripriya1197/terraform-module.git//.modules/aws/ec2?ref=main"
 
-  //   count              =   var.count    
+  //   count              =   var.count      
      region             =   var.region
      ami                =   var.region
      key_name           =   var.key_name
@@ -17,6 +17,7 @@ module "ec2_instance" {
    }
 
 }
+
 
 
 
