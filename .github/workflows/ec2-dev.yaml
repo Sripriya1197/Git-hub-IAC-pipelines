@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'infrastructure/EC2/dev**'
+       - '.github/workflows/ec2-dev.yaml'
 
 jobs:
   terraform:        
