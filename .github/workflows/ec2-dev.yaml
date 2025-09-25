@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'infrastructure/EC2/dev**'
-       - '.github/workflows/ec2-dev.yaml'
+      - 'infrastructure/EC2/dev/**'
+      - '.github/workflows/ec2-dev.yaml'
 
 jobs:
   terraform:        
