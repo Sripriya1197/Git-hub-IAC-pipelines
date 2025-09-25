@@ -3,7 +3,7 @@ name: ec2-DEV-CI/CD
 on:   
   push:
     branches:
-      - main
+      - main  
     paths:
       - 'infrastructure/EC2/dev/**'
       - '.github/workflows/ec2-dev.yaml'
