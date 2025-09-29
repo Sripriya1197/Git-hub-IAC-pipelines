@@ -1,6 +1,6 @@
 name: ec2-DEV-CI/CD  
 
-on:   
+on:     
   push:  
     branches:
       - main  
