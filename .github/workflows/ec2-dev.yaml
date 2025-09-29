@@ -35,7 +35,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Remove cached Terraform modules
-        run: rm -rf infrastructure/EC2/dev/.terraform/modules
+        run: rm -rf infrastructure/EC2/dev/.terraform
 
       - name: Terraform Init
         run: terraform -chdir=infrastructure/EC2/dev init -upgrade
