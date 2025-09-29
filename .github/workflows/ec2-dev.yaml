@@ -10,11 +10,11 @@ on:
 
 jobs:
   terraform:        
-    name: 'Terraform Init, Plan, Apply'    
+    name: 'Terraform Init, Plan, Validate'    
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: 'us-east-1'    
+      AWS_REGION: 'ap-south-1'
       TF_VERSION: '1.4.0'
 
     steps:
@@ -34,17 +34,13 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: List files in current directory
-        working-directory: ./infrastructure/EC2/dev
-        run: ls -l
-
-
       - name: Remove cached Terraform modules
-        run: rm -rf infrastructure/EC2/dev/.terraform
+        run: |
+          rm -rf infrastructure/EC2/dev/.terraform
+          rm -rf ~/.terraform.d/plugin-cache
 
       - name: Terraform Init
         run: terraform -chdir=infrastructure/EC2/dev init -upgrade
-
 
       - name: Terraform Validate
         run: terraform -chdir=infrastructure/EC2/dev validate
@@ -54,7 +50,3 @@ jobs:
 
       - name: Show Terraform Plan
         run: terraform -chdir=infrastructure/EC2/dev show tfplan
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform -chdir=infrastructure/EC2/dev apply -auto-approve -var-file=dev.tfvars
