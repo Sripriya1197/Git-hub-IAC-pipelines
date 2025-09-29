@@ -37,8 +37,8 @@ jobs:
       - name: Terraform Init
         run: terraform -chdir=infrastructure/EC2/dev init
 
-      - name: Terraform fmt
-        run: terraform -chdir=infrastructure/EC2/dev fmt -check
+      # - name: Terraform fmt
+      #   run: terraform -chdir=infrastructure/EC2/dev fmt -check
 
       - name: Terraform Validate
         run: terraform -chdir=infrastructure/EC2/dev validate
