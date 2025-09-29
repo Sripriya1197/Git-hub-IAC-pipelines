@@ -34,6 +34,11 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: List files in current directory
+        working-directory: ./infrastructure/EC2/dev
+        run: ls -l
+
+
       - name: Remove cached Terraform modules
         run: rm -rf infrastructure/EC2/dev/.terraform
 
