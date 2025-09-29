@@ -1,21 +1,20 @@
-name: Terraform Dev Deployment
+name: ec2-DEV-CI/CD
 
-on:
-  push:
+on:   
+  push:  
     branches:
-      - main
+      - main  
     paths:
       - 'infrastructure/EC2/dev/**'
-      - '.github/workflows/terraform-dev.yaml'
+      - '.github/workflows/ec2-dev.yaml'
 
 jobs:
-  terraform:
-    name: Terraform Init, Validate, Plan
+  terraform:        
+    name: 'Terraform Init, Plan, Apply'    
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: 'ap-south-1'
-      AWS_DEFAULT_REGION: 'ap-south-1'
+      AWS_REGION: 'us-east-1'    
       TF_VERSION: '1.4.0'
 
     steps:
@@ -27,14 +26,29 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
       - name: Remove cached Terraform modules
         run: rm -rf infrastructure/EC2/dev/.terraform/modules
 
       - name: Terraform Init
         run: terraform -chdir=infrastructure/EC2/dev init
 
+
       - name: Terraform Validate
         run: terraform -chdir=infrastructure/EC2/dev validate
 
       - name: Terraform Plan
         run: terraform -chdir=infrastructure/EC2/dev plan -out=tfplan -var-file=dev.tfvars
+
+      - name: Show Terraform Plan
+        run: terraform -chdir=infrastructure/EC2/dev show tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform -chdir=infrastructure/EC2/dev apply -auto-approve -var-file=dev.tfvars
