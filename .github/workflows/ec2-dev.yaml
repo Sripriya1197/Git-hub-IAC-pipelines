@@ -10,7 +10,7 @@ on:
 
 jobs:
   terraform:        
-    name: 'Terraform Init, Format, Validate, Plan, Apply'    
+    name: 'Terraform Init, Plan, Apply'    
     runs-on: ubuntu-latest
 
     env:
@@ -35,23 +35,19 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
-        run: |
-          export TF_LOG=DEBUG
-          terraform -chdir=infrastructure/EC2/dev init
+        run: terraform -chdir=infrastructure/EC2/dev init
 
       - name: Terraform fmt
-        run: terraform fmt
-        working-directory: infrastructure/EC2/dev
+        run: terraform -chdir=infrastructure/EC2/dev fmt -check
 
-      - name: Terraform plan
-        run: terraform plan -out=tfplan -var-file=dev.tfvars
-        working-directory: infrastructure/EC2/dev
-        
-      - name: Show Terraform Plan with Debugging
-        run: |
-          export TF_LOG=DEBUG
-          terraform show tfplan
-        working-directory: infrastructure/EC2/dev
+      - name: Terraform Validate
+        run: terraform -chdir=infrastructure/EC2/dev validate
+
+      - name: Terraform Plan
+        run: terraform -chdir=infrastructure/EC2/dev plan -out=tfplan -var-file=dev.tfvars
+
+      - name: Show Terraform Plan
+        run: terraform -chdir=infrastructure/EC2/dev show tfplan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
