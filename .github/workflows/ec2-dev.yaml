@@ -1,4 +1,4 @@
-name: ec2-DEV-CI/CD
+name: ec2-DEV-CI/CD  
 
 on:   
   push:  
